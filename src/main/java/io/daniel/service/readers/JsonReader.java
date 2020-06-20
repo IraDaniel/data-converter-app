@@ -1,4 +1,4 @@
-package io.daniel.readers;
+package io.daniel.service.readers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.daniel.model.AvailableType;

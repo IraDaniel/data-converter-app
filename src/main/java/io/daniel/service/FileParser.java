@@ -3,7 +3,7 @@ package io.daniel.service;
 import io.daniel.model.AvailableType;
 import io.daniel.model.FileParsedResult;
 import io.daniel.model.ParsedLine;
-import io.daniel.readers.OrderReader;
+import io.daniel.service.readers.OrderReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

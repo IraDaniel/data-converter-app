@@ -1,8 +1,8 @@
-package io.daniel;
+package io.daniel.service.readers;
 
+import io.daniel.SpringBootCommonTest;
 import io.daniel.model.Order;
 import io.daniel.model.ParsedLine;
-import io.daniel.readers.CsvReader;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

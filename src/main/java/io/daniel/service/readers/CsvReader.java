@@ -1,4 +1,4 @@
-package io.daniel.readers;
+package io.daniel.service.readers;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;

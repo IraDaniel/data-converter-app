@@ -1,4 +1,4 @@
-package io.daniel.readers;
+package io.daniel.service.readers;
 
 import io.daniel.model.AvailableType;
 import io.daniel.model.ParsedLine;
