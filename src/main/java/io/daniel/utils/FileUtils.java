@@ -15,11 +15,11 @@ public class FileUtils {
     private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     private static final Tika MIME_TYPE_DETECTOR = new Tika();
-    public static Set<String> availableTypes = new HashSet<>();
+    public static final Set<String> AVAILABLE_TYPES = new HashSet<>();
 
     static {
-        availableTypes.add("application/json");
-        availableTypes.add("text/csv");
+        AVAILABLE_TYPES.add("application/json");
+        AVAILABLE_TYPES.add("text/csv");
     }
 
     public static File getFile(String fileName) {
@@ -33,7 +33,7 @@ public class FileUtils {
     public static boolean isAvailableType(File file) {
         try {
             String detectedMimeType = MIME_TYPE_DETECTOR.detect(file);
-            return availableTypes.contains(detectedMimeType);
+            return AVAILABLE_TYPES.contains(detectedMimeType);
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             return false;

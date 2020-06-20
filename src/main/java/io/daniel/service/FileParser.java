@@ -29,15 +29,19 @@ public class FileParser {
                 .collect(Collectors.toMap(OrderReader::getFileType, Function.identity()));
     }
 
-    public List<FileParsedResult> parseFiles(String[] fileNames) {
+    public Stream<FileParsedResult> parseFiles(String[] fileNames) {
         return Stream.of(fileNames)
+                .parallel()
                 .map(fileName -> {
                     List<ParsedLine> parsedLines = parseFile(fileName);
                     return new FileParsedResult(fileName, parsedLines);
-                }).collect(Collectors.toList());
+                });
     }
 
     private List<ParsedLine> parseFile(String fileName) {
+        if (fileName == null) {
+            return Collections.emptyList();
+        }
         File file = getFile(fileName);
         if (isAvailableType(file)) {
             AvailableType type = getFileType(file);

@@ -21,10 +21,9 @@ public class ParserService {
     }
 
     public void process(String... fileNames) {
-        fileParser.parseFiles(fileNames).forEach(parsedResult -> {
-            List<OrderResponse> orderResponses = ConverterUtils.convert(parsedResult.getParsedLines(), parsedResult.getFileName());
-            printResult(orderResponses);
-        });
+        fileParser.parseFiles(fileNames)
+                .map(parsedResult -> ConverterUtils.convert(parsedResult.getParsedLines(), parsedResult.getFileName()))
+                .forEach(ParserService::printResult);
     }
 
     public static void printResult(List<OrderResponse> responses) {
