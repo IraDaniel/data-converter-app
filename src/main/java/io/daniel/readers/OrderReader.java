@@ -1,8 +1,14 @@
-package io.daniel;
+package io.daniel.readers;
 
+import io.daniel.model.AvailableType;
+import io.daniel.model.ParsedLine;
+
+import java.io.File;
 import java.util.List;
 
 public interface OrderReader {
 
-    List<OrderRequest> readOrders(String fileName);
+    List<ParsedLine> readOrders(File file);
+
+    AvailableType getFileType();
 }

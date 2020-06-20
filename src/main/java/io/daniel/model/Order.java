@@ -1,18 +1,21 @@
-package io.daniel.api;
+package io.daniel.model;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.Objects;
 
-public class OrderRequest {
+@JsonPropertyOrder({ "orderId", "amount", "currency", "comment" })
+public class Order {
 
     private long orderId;
     private long amount;
     private String currency;
     private String comment;
 
-    private OrderRequest() {
+    private Order() {
     }
 
-    public OrderRequest(long orderId, long amount, String currency, String comment) {
+    public Order(long orderId, long amount, String currency, String comment) {
         this.orderId = orderId;
         this.amount = amount;
         this.currency = currency;
@@ -39,11 +42,11 @@ public class OrderRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderRequest request = (OrderRequest) o;
-        return orderId == request.orderId &&
-                amount == request.amount &&
-                Objects.equals(currency, request.currency) &&
-                Objects.equals(comment, request.comment);
+        Order order = (Order) o;
+        return orderId == order.orderId &&
+                amount == order.amount &&
+                Objects.equals(currency, order.currency) &&
+                Objects.equals(comment, order.comment);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class OrderRequest {
 
     @Override
     public String toString() {
-        return "OrderRequest{" +
+        return "Order{" +
                 "orderId=" + orderId +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +

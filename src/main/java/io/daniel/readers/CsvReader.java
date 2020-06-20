@@ -1,28 +1,55 @@
-package io.daniel;
+package io.daniel.readers;
 
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import io.daniel.model.AvailableType;
+import io.daniel.model.Order;
+import io.daniel.model.ParsedLine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 public class CsvReader implements OrderReader {
 
-    public List<OrderRequest> readOrders(String fileName) {
+    private static Logger logger = LoggerFactory.getLogger(CsvReader.class);
+
+    private final CsvMapper mapper;
+
+    public CsvReader() {
+        mapper = new CsvMapper();
+    }
+
+    @Override
+    public List<ParsedLine> readOrders(File file) {
         try {
-            CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
-            CsvMapper mapper = new CsvMapper();
-            File file = new File(fileName);
-            MappingIterator<OrderRequest> readValues =
-                    mapper.reader(OrderRequest.class).with(bootstrapSchema).readValues(file);
-            return readValues.readAll();
+            MappingIterator<Order> readValues = mapper.readerWithTypedSchemaFor(Order.class).readValues(file);
+            List<ParsedLine> parsedResult = new ArrayList<>();
+            AtomicInteger lineNumber = new AtomicInteger(0);
+            while (readValues.hasNext()) {
+                try {
+                    Order order = readValues.next();
+                    parsedResult.add(ParsedLine.success(order, lineNumber.incrementAndGet()));
+                } catch (Exception e) {
+                    parsedResult.add(ParsedLine.fail(e.getMessage(), lineNumber.incrementAndGet()));
+                    logger.error(e.getMessage(), e);
+                }
+            }
+           return parsedResult;
         } catch (Exception e) {
-            System.out.println("Error occurred while loading object list from file " + fileName);
+            logger.error("Error occurred while loading object list from file " + file.getName(), e);
             return Collections.emptyList();
         }
     }
 
+    @Override
+    public AvailableType getFileType() {
+        return AvailableType.CSV;
+    }
 }
